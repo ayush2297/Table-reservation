@@ -1,23 +1,26 @@
 package com.restaurant;
 
+import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 public class RestaurantManagerMenu {
-    private static final String AVAILABLE = "Y";
-    private static final String UNAVAILABLE = "N";
-
+    private List<Table> tableList;
     private TableRegistration tableRegistration;
-    private Scanner input;
+    private SeatAvailabilityChecker seatAvailabilityChecker;
 
     public RestaurantManagerMenu() {
-        this.input = new Scanner(System.in);
+        this.tableList = new ArrayList<>();
         this.tableRegistration = new TableRegistration();
+        this.seatAvailabilityChecker = new SeatAvailabilityChecker();
     }
 
     public void displayMenu() {
+        Scanner input= new Scanner(System.in);
         int noOfTables = this.tableRegistration.addTableCount();
-        this.tableRegistration.enterTableDetails(noOfTables);
+        this.tableList = this.tableRegistration.enterTableDetails(noOfTables);
+        int totalAvailableSeats = this.tableRegistration.getTotalAvailableSeats();
         boolean stopApp = false;
         while (true) {
             int choice= 0;
@@ -35,7 +38,7 @@ public class RestaurantManagerMenu {
             }
             switch (choice) {
                 case 1:
-                    TableAvailability availability = this.tableRegistration.checkTableAvailability();
+                    TableAvailability availability = this.seatAvailabilityChecker.checkTableAvailability(this.tableList,totalAvailableSeats);
                     System.out.println(availability.toString());
                     break;
                 case 0:
