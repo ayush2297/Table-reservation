@@ -37,6 +37,7 @@ public class TableRegistration {
         System.out.println("table data registered!! ");
     }
 
-
-
+    public void showTables() {
+        this.tableRegistry.forEach(table -> System.out.println(table.toString()));
+    }
 }

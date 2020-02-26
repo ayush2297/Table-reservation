@@ -8,4 +8,12 @@ public class Table {
         this.tableNo = tableNo;
         this.numberOfSeats = numberOfSeats;
     }
+
+    @Override
+    public String toString() {
+        return "\nTable {" +
+                "\n\ttableNo=" + tableNo +
+                ",\n\tnumberOfSeats=" + numberOfSeats +
+                "\n}";
+    }
 }
