@@ -19,9 +19,6 @@ public class Table {
 
     @Override
     public String toString() {
-        return "\nTable {" +
-                "\n\ttableNo=" + tableNo +
-                ",\n\tnumberOfSeats=" + numberOfSeats +
-                "\n}";
+        return " Table "+ tableNo + " ,";
     }
 }

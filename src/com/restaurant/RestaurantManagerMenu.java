@@ -29,12 +29,8 @@ public class RestaurantManagerMenu {
                     this.tableRegistration.showTables();
                     break;
                 case 2:
-                    boolean isAvailable = this.tableRegistration.checkTableAvailability();
-                    if (isAvailable) {
-                        System.out.println(AVAILABLE);
-                    } else {
-                        System.out.println(UNAVAILABLE);
-                    }
+                    TableAvailability availability = this.tableRegistration.checkTableAvailability();
+                    System.out.println(availability.toString());
                     break;
                 case 0:
                     stopApp = true;

@@ -3,9 +3,12 @@ package com.restaurant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class TableRegistration {
 
+    private static final boolean AVAILABLE = true;
+    private static final boolean UNAVAILABLE = false;
     private int totalAvailableSeats;
     private List<Table> tableRegistry;
     Scanner input = new Scanner(System.in);
@@ -42,7 +45,7 @@ public class TableRegistration {
         this.tableRegistry.forEach(table -> System.out.println(table.toString()));
     }
 
-    public boolean checkTableAvailability() {
+    public TableAvailability checkTableAvailability() {
         while (true) {
             System.out.print("\nenter the number of seats required : ");
             int requiredNoOfSeats = input.nextInt();
@@ -58,18 +61,28 @@ public class TableRegistration {
         }
     }
 
-    private boolean availabilityCheckForDifferentTableSeats(int requiredNoOfSeats) {
+    private TableAvailability availabilityCheckForDifferentTableSeats(int requiredNoOfSeats) {
+        List<Table> availableTables = new ArrayList<>();
+        int seats = 0;
         if (totalAvailableSeats >= requiredNoOfSeats) {
-            return true;
+            for (Table table : this.tableRegistry) {
+                availableTables.add(table);
+                seats += table.getNumberOfSeats();
+                if (seats>=requiredNoOfSeats) {
+                    break;
+                }
+            }
+            return new TableAvailability(availableTables,AVAILABLE);
         }
-        return false;
+        return new TableAvailability(UNAVAILABLE);
     }
 
-    private boolean availabilityCheckForSameTableSeats(int requiredNoOfSeats) {
-        long noOfTablesAvailForThisReq = this.tableRegistry.stream().filter(table -> table.getNumberOfSeats() >= requiredNoOfSeats).count();
-        if (noOfTablesAvailForThisReq > 0) {
-            return true;
+    private TableAvailability availabilityCheckForSameTableSeats(int requiredNoOfSeats) {
+        List<Table> tableList = this.tableRegistry.stream().filter(table -> table.getNumberOfSeats() >= requiredNoOfSeats)
+                .collect(Collectors.toList());
+        if (tableList.size() > 0) {
+            return new TableAvailability(tableList, AVAILABLE);
         }
-        return false;
+        return new TableAvailability(UNAVAILABLE);
     }
 }
