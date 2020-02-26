@@ -37,4 +37,6 @@ public class TableRegistration {
         System.out.println("table data registered!! ");
     }
 
+
+
 }
