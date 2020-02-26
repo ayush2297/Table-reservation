@@ -25,6 +25,8 @@ public class TableRegistration {
             int noOfSeats = input.nextInt();
             seatsPerTable.add(noOfSeats);
         }
+        System.out.println("\nStoring entered details..... ");
+        this.registerTables(noOfTables,seatsPerTable);
     }
 
     public void registerTables(int numberOfTables, List<Integer> numberOfSeatsPerTable) {
@@ -32,6 +34,7 @@ public class TableRegistration {
             Table table = new Table(tableNo, numberOfSeatsPerTable.get(tableNo));
             tableRegistry.add(table);
         }
+        System.out.println("table data registered!! ");
     }
 
 }
