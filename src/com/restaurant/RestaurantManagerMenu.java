@@ -12,23 +12,20 @@ public class RestaurantManagerMenu {
     }
 
     public void displayMenu() {
+        int noOfTables = this.tableRegistration.addTableCount();
+        this.tableRegistration.enterTableDetails(noOfTables);
         while (true) {
             boolean stopApp = false;
             System.out.println("\n\nWelcome to restaurant manager!!" +
-                    "\n1.add tables" +
-                    "\n2.show tables" +
-                    "\n3.check table availability" +
+                    "\n1.show tables" +
+                    "\n2.check table availability" +
                     "\n0.Exit\n\nEnter your choice");
             int choice = input.nextInt();
             switch (choice) {
                 case 1:
-                    int noOfTables = this.tableRegistration.addTableCount();
-                    this.tableRegistration.enterTableDetails(noOfTables);
-                    break;
-                case 2:
                     this.tableRegistration.showTables();
                     break;
-                case 3:
+                case 2:
                     System.out.println("this feature is unavailable right now");
                     break;
                 case 0:
