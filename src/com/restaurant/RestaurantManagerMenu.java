@@ -1,5 +1,6 @@
 package com.restaurant;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class RestaurantManagerMenu {
@@ -17,18 +18,23 @@ public class RestaurantManagerMenu {
     public void displayMenu() {
         int noOfTables = this.tableRegistration.addTableCount();
         this.tableRegistration.enterTableDetails(noOfTables);
+        boolean stopApp = false;
         while (true) {
-            boolean stopApp = false;
-            System.out.println("\n\nWelcome to restaurant manager!!" +
-                    "\n1.show tables" +
-                    "\n2.check table availability" +
-                    "\n0.Exit\n\nEnter your choice");
-            int choice = input.nextInt();
+            int choice= 0;
+            while (true) {
+                try {
+                    System.out.println("\n\nWelcome to restaurant manager!!" +
+                            "\n1.check table availability" +
+                            "\n0.Exit\n\nEnter your choice");
+                    choice = input.nextInt();
+                } catch (InputMismatchException e) {
+                    input.nextLine();
+                    continue;
+                }
+                break;
+            }
             switch (choice) {
                 case 1:
-                    this.tableRegistration.showTables();
-                    break;
-                case 2:
                     TableAvailability availability = this.tableRegistration.checkTableAvailability();
                     System.out.println(availability.toString());
                     break;

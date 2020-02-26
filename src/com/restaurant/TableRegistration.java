@@ -1,9 +1,9 @@
 package com.restaurant;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 public class TableRegistration {
 
@@ -11,53 +11,91 @@ public class TableRegistration {
     private static final boolean UNAVAILABLE = false;
     private int totalAvailableSeats;
     private List<Table> tableRegistry;
-    Scanner input = new Scanner(System.in);
+    private Scanner input;
 
     public TableRegistration() {
         this.tableRegistry = new ArrayList<>();
         this.totalAvailableSeats = 0;
+        this.input = new Scanner(System.in);
     }
 
     public int addTableCount() {
-        System.out.println("enter the number of tables you want to add  :");
-        return input.nextInt();
+        while (true) {
+            int noOfTables = 0;
+            boolean isCorrectInput = true;
+            try {
+                System.out.println("enter the number of tables you want to add  :");
+                noOfTables = input.nextInt();
+                this.throwIfLessThan1(noOfTables);
+            } catch (InputMismatchException e) {
+                input.nextLine();
+                continue;
+            }
+            return noOfTables;
+        }
     }
 
     public void enterTableDetails(int noOfTables) {
         List<Integer> seatsPerTable = new ArrayList<>();
         for (int tableNo = 0; tableNo < noOfTables; tableNo++) {
-            System.out.println("enter the number of seats available on table no. " + (tableNo + 1) + " : ");
-            int noOfSeats = input.nextInt();
+            int noOfSeats = 0;
+            while (true) {
+                try {
+                    System.out.println("enter the number of seats available on table no. " + (tableNo + 1) + " : ");
+                    noOfSeats = input.nextInt();
+                    this.throwIfLessThan1(noOfSeats);
+                } catch (InputMismatchException e) {
+                    System.out.println("************ Incorrect input.... please enter a number ***********");
+                    input.nextLine();
+                    continue;
+                }
+                break;
+            }
             this.totalAvailableSeats += noOfSeats;
             seatsPerTable.add(noOfSeats);
         }
         this.registerTables(noOfTables, seatsPerTable);
     }
 
-    public void registerTables(int numberOfTables, List<Integer> numberOfSeatsPerTable) {
-        for (int tableNo = 0; tableNo < numberOfTables; tableNo++) {
-            Table table = new Table((tableNo + 1), numberOfSeatsPerTable.get(tableNo));
-            tableRegistry.add(table);
+    public TableAvailability checkTableAvailability() {
+        while (true) {
+            int requiredNoOfSeats = 0;
+            String tableTypeChoice = "";
+            while (true) {
+                try {
+                    System.out.print("\nenter the number of seats required : ");
+                    requiredNoOfSeats = input.nextInt();
+                    this.throwIfLessThan1(requiredNoOfSeats);
+                } catch (InputMismatchException e) {
+                    input.nextLine();
+                    System.out.println("************ Incorrect input.... please enter correct input ***********");
+                    continue;
+                }
+                break;
+            }
+            while (true) {
+                System.out.print("\nshould they be on the same table? (Y/y or N/n) : ");
+                tableTypeChoice = input.next();
+                if (tableTypeChoice.matches("^[Yy]$")) {
+                    return this.availabilityCheckForSameTableSeats(requiredNoOfSeats);
+                } else if (tableTypeChoice.matches("^[Nn]$")) {
+                    return this.availabilityCheckForDifferentTableSeats(requiredNoOfSeats);
+                } else {
+                    System.out.println("\nincorrect choice!! please try again..");
+                }
+            }
         }
     }
 
-    public void showTables() {
-        this.tableRegistry.forEach(table -> System.out.println(table.toString()));
+    private void throwIfLessThan1(int number) {
+        if (number < 1)
+            throw new InputMismatchException();
     }
 
-    public TableAvailability checkTableAvailability() {
-        while (true) {
-            System.out.print("\nenter the number of seats required : ");
-            int requiredNoOfSeats = input.nextInt();
-            System.out.print("\nshould they be on the same table? (Y/y or N/n) : ");
-            String tableTypeChoice = input.next();
-            if (tableTypeChoice.matches("^[Yy]$")) {
-                return this.availabilityCheckForSameTableSeats(requiredNoOfSeats);
-            } else if (tableTypeChoice.matches("^[Nn]$")) {
-                return this.availabilityCheckForDifferentTableSeats(requiredNoOfSeats);
-            } else {
-                System.out.println("\nincorrect choice!! please try again..");
-            }
+    private void registerTables(int numberOfTables, List<Integer> numberOfSeatsPerTable) {
+        for (int tableNo = 0; tableNo < numberOfTables; tableNo++) {
+            Table table = new Table((tableNo + 1), numberOfSeatsPerTable.get(tableNo));
+            tableRegistry.add(table);
         }
     }
 
@@ -92,6 +130,7 @@ public class TableRegistration {
         }
         return new TableAvailability(UNAVAILABLE);
     }
+
 
     private void updateTableDetails(List<Table> availableTables, int remainingSeatsFromLastTable) {
         for (int i = 0; i < availableTables.size() - 1; i++) {
