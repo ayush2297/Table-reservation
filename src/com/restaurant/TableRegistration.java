@@ -13,9 +13,12 @@ public class TableRegistration {
         this.tableRegistry = new ArrayList<>();
     }
 
-    public void addTables() {
+    public int addTables() {
         System.out.println("enter the number of tables you want to add  :");
-        int noOfTables = input.nextInt();
+        return input.nextInt();
+    }
+
+    public void enterTableDetails(int noOfTables) {
         List<Integer> seatsPerTable = new ArrayList<>();
         for (int tableNo = 0; tableNo < noOfTables; tableNo++) {
             System.out.println("enter the number of seats available on table no. " + (tableNo + 1) + " : ");
