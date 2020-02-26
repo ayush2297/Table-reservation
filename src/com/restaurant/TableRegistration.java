@@ -1,16 +1,30 @@
 package com.restaurant;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class TableRegistration {
 
     private List<Table> tableRegistry;
+    Scanner input = new Scanner(System.in);
 
-    public TableRegistration(List<Table> tableRegistry) {
-        tableRegistry = new ArrayList<>();
+    public TableRegistration() {
+        this.tableRegistry = new ArrayList<>();
     }
 
-    public void registerTables (int numberOfTables, List<Integer> numberOfSeatsPerTable) {
+    public void addTables() {
+        System.out.println("enter the number of tables you want to add  :");
+        int noOfTables = input.nextInt();
+        List<Integer> seatsPerTable = new ArrayList<>();
+        for (int tableNo = 0; tableNo < noOfTables; tableNo++) {
+            System.out.println("enter the number of seats available on table no. " + (tableNo + 1) + " : ");
+            int noOfSeats = input.nextInt();
+            seatsPerTable.add(noOfSeats);
+        }
+    }
+
+    public void registerTables(int numberOfTables, List<Integer> numberOfSeatsPerTable) {
         for (int tableNo = 0; tableNo < numberOfTables; tableNo++) {
             Table table = new Table(tableNo, numberOfSeatsPerTable.get(tableNo));
             tableRegistry.add(table);
