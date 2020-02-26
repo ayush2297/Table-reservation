@@ -1,12 +1,20 @@
 package com.restaurant;
 
 public class Table {
-    private final int tableNo;
-    private final Integer numberOfSeats;
+    private int tableNo;
+    private Integer numberOfSeats;
 
     public Table(int tableNo, Integer numberOfSeats) {
         this.tableNo = tableNo;
         this.numberOfSeats = numberOfSeats;
+    }
+
+    public int getTableNo() {
+        return tableNo;
+    }
+
+    public Integer getNumberOfSeats() {
+        return numberOfSeats;
     }
 
     @Override

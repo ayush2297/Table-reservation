@@ -3,6 +3,9 @@ package com.restaurant;
 import java.util.Scanner;
 
 public class RestaurantManagerMenu {
+    private static final String AVAILABLE = "Y";
+    private static final String UNAVAILABLE = "N";
+
     private TableRegistration tableRegistration;
     private Scanner input;
 
@@ -26,7 +29,12 @@ public class RestaurantManagerMenu {
                     this.tableRegistration.showTables();
                     break;
                 case 2:
-                    System.out.println("this feature is unavailable right now");
+                    boolean isAvailable = this.tableRegistration.checkTableAvailability();
+                    if (isAvailable) {
+                        System.out.println(AVAILABLE);
+                    } else {
+                        System.out.println(UNAVAILABLE);
+                    }
                     break;
                 case 0:
                     stopApp = true;
