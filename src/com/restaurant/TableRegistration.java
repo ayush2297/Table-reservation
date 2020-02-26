@@ -13,7 +13,7 @@ public class TableRegistration {
         this.tableRegistry = new ArrayList<>();
     }
 
-    public int addTables() {
+    public int addTableCount() {
         System.out.println("enter the number of tables you want to add  :");
         return input.nextInt();
     }

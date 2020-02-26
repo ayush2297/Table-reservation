@@ -4,7 +4,7 @@ public class Main {
 
     public static void main(String[] args) {
         TableRegistration tableRegistration = new TableRegistration();
-        int noOfTables = tableRegistration.addTables();
+        int noOfTables = tableRegistration.addTableCount();
         tableRegistration.enterTableDetails(noOfTables);
     }
 }
