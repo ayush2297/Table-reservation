@@ -6,9 +6,5 @@ public class Main {
 
         RestaurantManagerMenu restaurantManagerMenu = new RestaurantManagerMenu();
         restaurantManagerMenu.displayMenu();
-//        TableRegistration tableRegistration = new TableRegistration();
-//
-//        int noOfTables = tableRegistration.addTableCount();
-//        tableRegistration.enterTableDetails(noOfTables);
     }
 }
