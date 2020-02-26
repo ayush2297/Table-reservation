@@ -66,23 +66,39 @@ public class TableRegistration {
         int seats = 0;
         if (totalAvailableSeats >= requiredNoOfSeats) {
             for (Table table : this.tableRegistry) {
-                availableTables.add(table);
-                seats += table.getNumberOfSeats();
-                if (seats>=requiredNoOfSeats) {
-                    break;
+                if (table.getAvailableSeats() > 0) {
+                    availableTables.add(table);
+                    seats += table.getAvailableSeats();
+                    if (seats >= requiredNoOfSeats) {
+                        int remainingSeatsFromLastTable = seats - requiredNoOfSeats;
+                        this.updateTableDetails(availableTables, remainingSeatsFromLastTable);
+                        return new TableAvailability(availableTables, AVAILABLE);
+                    }
                 }
             }
-            return new TableAvailability(availableTables,AVAILABLE);
         }
         return new TableAvailability(UNAVAILABLE);
     }
 
     private TableAvailability availabilityCheckForSameTableSeats(int requiredNoOfSeats) {
-        List<Table> tableList = this.tableRegistry.stream().filter(table -> table.getNumberOfSeats() >= requiredNoOfSeats)
-                .collect(Collectors.toList());
-        if (tableList.size() > 0) {
-            return new TableAvailability(tableList, AVAILABLE);
+        List<Table> availableTables = new ArrayList<>();
+        for (Table table : this.tableRegistry) {
+            if (table.getAvailableSeats() >= requiredNoOfSeats) {
+                availableTables.add(table);
+                int remainingNoOfSeats = table.getNumberOfSeats() - requiredNoOfSeats;
+                this.updateTableDetails(availableTables, remainingNoOfSeats);
+                return new TableAvailability(availableTables, AVAILABLE);
+            }
         }
         return new TableAvailability(UNAVAILABLE);
+    }
+
+    private void updateTableDetails(List<Table> availableTables, int remainingSeatsFromLastTable) {
+        for (int i = 0; i < availableTables.size() - 1; i++) {
+            Table table = availableTables.get(0);
+            table.setAvailableSeats(0);
+        }
+        Table lastTable = availableTables.get(availableTables.size() - 1);
+        lastTable.setAvailableSeats(remainingSeatsFromLastTable);
     }
 }
